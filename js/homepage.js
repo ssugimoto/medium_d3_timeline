@@ -1,3 +1,6 @@
+
+
+
 d3.json("/get_timeline_data", {
     method: "POST",
     body: JSON.stringify({
@@ -11,6 +14,8 @@ d3.json("/get_timeline_data", {
 }).catch((error) => {
     console.error("Error loading the data: " + error);
 });
+
+
 
 function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data) {
     // access data
@@ -93,7 +98,7 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data)
         )
     bounds.append("path")
         .attr("d", downtimeAreaGenerator(downtimeDataset))
-        .attr("fill", "orange")
+        .attr("fill", "orange")  //orange から 
         .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
