@@ -110,7 +110,12 @@ func getTimeLineData(writer http.ResponseWriter, request *http.Request, params h
 		logInfo("MAIN", "Parsing data ended")
 		return
 	}
-	endTime := time.Unix(data.Date/1000, 0)
+	//unixtime=1644883200=2022-02-15 00:00:00 +0000 UTC
+	//data.Date=1644969600000 なので1000で割る
+	//endTime := time.Unix(data.Date/1000, 0) //UTC
+	fmt.Println(data.Date)
+	endTime := time.Unix(data.Date/1000, 0) //jst?
+	logInfo("endTime=", endTime.String())
 	var productionData []TimelineData
 	var downtimeData []TimelineData
 	var powerOffData []TimelineData
