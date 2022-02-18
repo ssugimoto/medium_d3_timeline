@@ -4,7 +4,9 @@ machines.forEach(function(machineName, index, array) {
     console.log(machineName);
     console.log("Date=",Date.now()); // unix time,1970-01-01 00:00:00(UTC)からの秒数(ミリ秒単位)で取得
     //date = new Date(1999, 11, 31); // => 1999-12-31 00:00:00.000
-    const dateToday = new Date(Date.UTC(2022, 1, 16));
+    //const dateToday = new Date(Date.UTC(2022, 1, 16) ); //1/16 0:00:00UTC
+    const dateToday = new Date(Date.UTC(2022, 1, 16,-9,0,0));  
+    console.log("dateToday",dateToday.toString()); //dateToday Wed Feb 16 2022 09:00:00 GMT+0900 (日本標準時)
     d3.json("/get_timeline_data", {
         method: "POST",
         body: JSON.stringify({
@@ -63,8 +65,8 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data,
 
     console.log("screen.width",screen.width)
     console.log("xScale",xScale)
-    var formatTime = d3.timeFormat("%H%M"); // %H%M = 1636 = 16時36分
-    console.log("formatTime",formatTime(new Date)); // 
+    // var formatTime = d3.timeFormat("%H%M"); // %H%M = 1636 = 16時36分
+    // console.log("formatTime",formatTime(new Date));
 
 
     // prepare data
@@ -83,10 +85,7 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data,
         .y0(dimensions.height - dimensions.margin.bottom)
         .y1(d => yScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
-
-    //tickFormat(d3.time.format('%H:00'));
-    //d3.axisBottom(xScale).tickFormat(d3.timeFormat("%H:")) // 24時間制の時間 [00,23]フォーマット
-    
+   
 
     // prepare tooltip
     let div = d3.select("#timeline").append("div")
@@ -101,7 +100,9 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data,
     //     .call(d3.axisBottom(timeScale))
     bounds.append("g")
         .attr("transform", "translate(0," + (dimensions.height - dimensions.margin.bottom) + ")")
-        .call(d3.axisBottom(timeScale).tickFormat(d3.timeFormat("%H:00")))  // 日付のフォーマット変換
+        .call(d3.axisBottom(timeScale).tickFormat(d3.timeFormat('%H:%M')))  // 日付のフォーマット変換
+        // .call(d3.axisBottom(timeScale).tickFormat(d3.timeFormat("%H")))  // 日付のフォーマット変換
+        // .call(d3.axisBottom(timeScale).tickFormat(d3.timeFormat("%H:00.%Z")))  // 日付のフォーマット変換
 
     // draw data with tooltip
     bounds.append("path")
